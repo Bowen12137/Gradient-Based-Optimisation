@@ -148,7 +148,7 @@ Adam provides faster convergence by adjusting the learning rate for each paramet
 
 ## Results
 
-The program prints training loss and accuracy at each epoch. At the end of the training, it displays the final accuracy on the test set. You can visualize the results by plotting the accuracy and loss over the epochs to understand how the optimization algorithms perform.
+I document all the result(training loss, accuracy) and the training process in a report check it here  -[report.pdf](report.pdf)
 
 ## References
 
