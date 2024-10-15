@@ -21,6 +21,10 @@ int main(int argc, char** argv) {
     double learning_rate = atof(argv[2]);
     unsigned int batch_size = atoi(argv[3]);
     unsigned int total_epochs = atoi(argv[4]);
+    double alpha = atof(argv[5]);
+    double initial_learning_rate = atof(argv[6]);
+    double final_learning_rate = atof(argv[7]);
+    int validation = atoi(argv[9]);
     
     if(!path_to_dataset || !learning_rate || !batch_size || !total_epochs) {
         printf("ERROR: invalid argument\n");
@@ -38,11 +42,15 @@ int main(int argc, char** argv) {
     printf("Initialising neural network... \n");
     printf("********************************************************************************\n");
     initialise_nn();
+    // if (validation){
+    //     numerical_solution();
+    //     free_dataset_data_structures();
+    // }
 
     printf("********************************************************************************\n");
     printf("Initialising optimiser...\n");
     printf("********************************************************************************\n");
-    initialise_optimiser(learning_rate, batch_size, total_epochs);
+    initialise_optimiser(learning_rate, batch_size, total_epochs, alpha, initial_learning_rate, final_learning_rate);
 
     printf("********************************************************************************\n");
     printf("Performing training optimisation...\n");
