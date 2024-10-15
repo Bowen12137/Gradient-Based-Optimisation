@@ -1,71 +1,65 @@
-
-
 # Gradient-Based Optimization for Handwritten Digit Classification (MNIST)
 
-This project implements a multi-layer perceptron (MLP) neural network optimized using various gradient-based optimization techniques, including **Stochastic Gradient Descent (SGD)**, **Learning Rate Decay**, **Momentum**, and **Adaptive Learning Methods** like **Adam** and **RMSProp**. The goal is to classify handwritten digits from the MNIST dataset with high accuracy and efficient convergence.
+This project focuses on the C-based implementation of a multi-layer perceptron (MLP) neural network optimized using various gradient-based optimization techniques. The project explores how neural networks work at a fundamental level, including forward propagation, backpropagation, and different optimization strategies implemented from scratch. The goal is to classify handwritten digits from the MNIST dataset using techniques like **Stochastic Gradient Descent (SGD)**, **Learning Rate Decay**, **Momentum**, and **Adam**.
 
 ## Table of Contents
-- [Gradient-Based Optimization for Handwritten Digit Classification (MNIST)](#gradient-based-optimization-for-handwritten-digit-classification-mnist)
-  - [Table of Contents](#table-of-contents)
-  - [Project Overview](#project-overview)
-  - [Features](#features)
-  - [Installation](#installation)
-  - [Usage](#usage)
-  - [Files Description](#files-description)
-  - [Implementation Details](#implementation-details)
-    - [Stochastic Gradient Descent (SGD)](#stochastic-gradient-descent-sgd)
-    - [Learning Rate Decay](#learning-rate-decay)
-    - [Momentum](#momentum)
-    - [Adaptive Learning Methods (Adam)](#adaptive-learning-methods-adam)
-  - [How to Run](#how-to-run)
-  - [Results](#results)
-  - [References](#references)
+- [Project Overview](#project-overview)
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Files Description](#files-description)
+- [Understanding the Neural Network and Backpropagation](#understanding-the-neural-network-and-backpropagation)
+- [Implementation Details](#implementation-details)
+  - [Stochastic Gradient Descent (SGD)](#stochastic-gradient-descent-sgd)
+  - [Learning Rate Decay](#learning-rate-decay)
+  - [Momentum](#momentum)
+  - [Adaptive Learning Methods (Adam)](#adaptive-learning-methods-adam)
+- [How to Run](#how-to-run)
+- [Results](#results)
+- [References](#references)
 
 ## Project Overview
 
-The aim of this project is to implement and compare different optimization techniques to train a neural network for classifying handwritten digits using the **MNIST** dataset. The neural network is a multi-layer perceptron consisting of five layers:
-- Input layer: 784 neurons (28x28 pixels)
-- Three hidden layers: 300, 100, and 100 neurons respectively
-- Output layer: 10 neurons (for digits 0-9)
-
-We evaluate the performance of different optimization strategies based on their classification accuracy and computational efficiency.
+This project implements a multi-layer perceptron (MLP) neural network from scratch in C. The MLP is trained on the MNIST dataset for handwritten digit classification. We focus on understanding how neural networks compute predictions through forward propagation, how they learn through backpropagation, and how various optimization algorithms can improve convergence and accuracy. All these algorithms are implemented manually, providing an in-depth understanding of how each works at a low level.
 
 ## Features
 
-- Multi-layer perceptron (MLP) neural network implementation.
-- Optimization techniques: 
+- Full C implementation of a Multi-Layer Perceptron (MLP).
+- Manual implementation of optimization techniques:
   - Stochastic Gradient Descent (SGD)
   - Learning Rate Decay
   - Momentum
-  - Adaptive Learning Rate methods (Adam)
-- Training and testing using the MNIST dataset.
-- Detailed report generation with accuracy and loss visualization.
-  
+  - Adaptive Learning Methods (Adam)
+- Detailed forward propagation and backpropagation implementation for training the network.
+- Training and testing on the MNIST dataset.
+- Report generation with accuracy and loss metrics.
+
 ## Installation
 
-Follow these steps to set up and run the project locally:
+To set up and run the project locally, follow these steps:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/gradient-based-optimization.git
-   cd gradient-based-optimization
+   git clone https://github.com/yourusername/gradient-based-optimization-c.git
+   cd gradient-based-optimization-c
    ```
 
-2. Download and install the necessary dependencies:
-   - C compiler: You need `gcc` to compile the C code. If you don't have it installed, you can install it by running:
+2. Install the necessary tools:
+   - **GCC compiler**: The project is implemented in C, so ensure that you have GCC installed:
      ```bash
      sudo apt-get install gcc
      ```
-   - Ensure the **MNIST dataset** files are available and unzip them in the same directory.
+
+3. Download the **MNIST dataset**, unzip it, and place it in the project directory.
 
 ## Usage
 
-1. Compile the source code:
+1. Compile the source code using the provided `Makefile`:
    ```bash
    make
    ```
 
-2. Run the program with your preferred hyperparameters:
+2. Run the program with your choice of learning rate, batch size, and number of epochs:
    ```bash
    ./mnist_optimiser.out <path_to_mnist_data> <learning_rate> <batch_size> <num_epochs>
    ```
@@ -77,63 +71,84 @@ Follow these steps to set up and run the project locally:
 
 ## Files Description
 
-- `main.c`: Entry point of the program. Initializes the dataset, neural network, and optimizer. Starts the training process.
-- `optimiser.c`: Implements the optimization framework, including SGD, learning rate decay, momentum, and Adam.
-- `mnist_helper.c`: Contains helper functions for loading and parsing the MNIST dataset.
-- `neural_network.c`: Defines the forward and backward pass of the neural network.
-- `neural_network.h`: Header file for defining neuron structures and weight matrices.
-- `optimiser.h`: Header file for the optimizer functions.
-- `mnist_helper.h`: Header file for dataset loading functions.
-- `Makefile`: Instructions for compiling the project.
+- `main.c`: Initializes the dataset, the neural network, and the optimizer, then starts the training process.
+- `optimiser.c`: Implements the optimization framework. Includes implementations for SGD, learning rate decay, momentum, and Adam, all from scratch.
+- `mnist_helper.c`: Loads and parses the MNIST dataset into a format suitable for training and testing.
+- `neural_network.c`: Defines how the neural network performs forward propagation and backpropagation. This file contains the core logic for neuron activations and weight updates.
+- `neural_network.h`: Defines data structures for neurons, weight matrices, and gradients.
+- `optimiser.h`: Header file that declares the optimizer functions used in `optimiser.c`.
+- `mnist_helper.h`: Helper functions for dataset handling.
+- `Makefile`: Provides the instructions for compiling the project.
+
+## Understanding the Neural Network and Backpropagation
+
+### Neural Network Architecture
+
+The MLP in this project consists of:
+- **Input layer**: 784 neurons (28x28 pixels from the MNIST dataset).
+- **Three hidden layers**: The first with 300 neurons, followed by two layers with 100 neurons each.
+- **Output layer**: 10 neurons corresponding to the digits 0-9.
+
+### Forward Propagation
+
+During forward propagation, the input (a flattened 28x28 pixel image) is passed through each layer of the network, where each neuron applies a weighted sum of its inputs and a non-linear activation function (ReLU for hidden layers, softmax for the output layer). The forward pass computes the network's prediction for the input sample.
+
+### Backpropagation
+
+Backpropagation is used to train the neural network by calculating the gradient of the loss function with respect to each weight. The gradients are then used to update the weights. Backpropagation works by computing the loss at the output layer and propagating this error backward through the network, layer by layer, using the chain rule to update each weight.
 
 ## Implementation Details
 
 ### Stochastic Gradient Descent (SGD)
 
-SGD updates the weights by calculating the gradient of the loss with respect to each weight and then subtracting this value, scaled by the learning rate. The update rule is:
+SGD is the simplest optimization algorithm implemented. It updates the weights by subtracting a fraction of the gradient of the loss with respect to the weights:
 ```math
 w = w - \eta \cdot \nabla L(w)
 ```
 Where:
-- \( w \) is the weight matrix,
+- \( w \) is the weight,
 - \( \eta \) is the learning rate,
-- \( \nabla L(w) \) is the gradient of the loss function.
+- \( \nabla L(w) \) is the gradient of the loss with respect to the weight.
 
 ### Learning Rate Decay
 
-To improve convergence, we use learning rate decay. The learning rate decreases over time as follows:
+Learning rate decay reduces the learning rate over time to fine-tune the optimization process. The learning rate decreases according to the following formula:
 ```math
 \eta_t = \eta_0 \cdot (1 - \frac{t}{T})
 ```
-Where \( t \) is the current epoch, and \( T \) is the total number of epochs.
+Where:
+- \( \eta_0 \) is the initial learning rate,
+- \( t \) is the current epoch,
+- \( T \) is the total number of epochs.
 
 ### Momentum
 
-Momentum helps accelerate learning by adding a velocity term:
+Momentum accelerates the convergence by adding a velocity term to the gradient updates. This term smooths out the gradient and allows the algorithm to escape local minima:
 ```math
 v_t = \beta v_{t-1} + \eta \nabla L(w)
 w = w - v_t
 ```
-Where \( \beta \) is a momentum term, typically between 0.5 and 0.9.
+Where \( \beta \) is a hyperparameter that controls how much momentum is applied.
 
 ### Adaptive Learning Methods (Adam)
 
-Adam adjusts the learning rate for each parameter dynamically using estimates of first and second moments:
+Adam is an advanced optimization algorithm that adapts the learning rate for each parameter based on estimates of the first and second moments of the gradients:
 ```math
 m_t = \beta_1 m_{t-1} + (1 - \beta_1) \nabla L(w)
 v_t = \beta_2 v_{t-1} + (1 - \beta_2) \nabla L(w)^2
 w = w - \frac{\eta}{\sqrt{v_t} + \epsilon} m_t
 ```
+Adam provides faster convergence by adjusting the learning rate for each parameter individually.
 
 ## How to Run
 
-1. Ensure the MNIST dataset is available in the specified directory.
+1. Make sure the MNIST dataset is in the correct directory.
 2. Compile the code using `make`.
-3. Run the program with appropriate arguments for the dataset path, learning rate, batch size, and number of epochs.
+3. Run the program with the desired parameters for learning rate, batch size, and number of epochs.
 
 ## Results
 
-The program will print the training loss and accuracy for each epoch. After training, it will display the final test accuracy. The results can be visualized using a plotting tool to track the convergence of the optimization algorithms.
+The program prints training loss and accuracy at each epoch. At the end of the training, it displays the final accuracy on the test set. You can visualize the results by plotting the accuracy and loss over the epochs to understand how the optimization algorithms perform.
 
 ## References
 
